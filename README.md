@@ -46,7 +46,8 @@ npm install
 
 3. **Set up environment variables:**
 \`\`\`bash
-cp .env.example .env.local
+# Backend API URL - Your Render Backend
+NEXT_PUBLIC_API_URL=https://dec-tech.onrender.com
 \`\`\`
 
 4. **Update your backend URL in `.env.local`:**
