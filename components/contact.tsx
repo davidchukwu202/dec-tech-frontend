@@ -17,7 +17,7 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,26 +25,36 @@ export default function ContactPage() {
     setError(null);
 
     try {
+      // Step 1: Save to backend
       const backendRes = await fetch('https://dec-tech.onrender.com/consults', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!backendRes.ok) throw new Error('Backend save failed');
+      if (!backendRes.ok) {
+        const errorText = await backendRes.text();
+        throw new Error(`Backend error: ${backendRes.status} - ${errorText}`);
+      }
 
-      await emailjs.send(
-        'service_v2mdvbs', // Your EmailJS service ID
-        'template_a99rzls', // Your EmailJS template ID
+      // Step 2: Send via EmailJS
+      const emailResponse = await emailjs.send(
+        'service_v2mdvbs', // Replace with your EmailJS service ID
+        'template_a99rzls', // Replace with your EmailJS template ID
         formData,
-        'srkWXI2L5mpBxoUKK' // Your EmailJS public API key
+        'srkWXI2L5mpBxoUKK' // Replace with your public key
       );
 
+      console.log('EmailJS response:', emailResponse);
+
+      // Step 3: If all succeeded
       setIsSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    } catch (err) {
-      console.error(err);
-      setError('Something went wrong. Try again.');
+    } catch (err: any) {
+      console.error('Error in submission:', err);
+      setError(
+        'Something went wrong while sending your message. Please try again or contact us directly.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -202,7 +212,7 @@ export default function ContactPage() {
                   </select>
                 </div>
                 <textarea
-                  rows="6"
+                  rows={6}
                   placeholder="Your Message"
                   value={formData.message}
                   onChange={(e) =>
