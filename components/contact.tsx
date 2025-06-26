@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
@@ -25,14 +25,11 @@ export default function ContactPage() {
     setError(null);
 
     try {
-      const backendRes = await fetch(
-        'https://dec-tech.onrender.com//consults',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        }
-      );
+      const backendRes = await fetch('https://dec-tech.onrender.com/consults', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
       if (!backendRes.ok) throw new Error('Backend save failed');
 

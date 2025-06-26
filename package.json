@@ -12,6 +12,7 @@
     "upload:images": "node scripts/upload-images-to-backend.js"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@radix-ui/react-slot": "^1.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
