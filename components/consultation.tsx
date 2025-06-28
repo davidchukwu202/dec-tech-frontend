@@ -13,7 +13,7 @@ export default function ConsultationPage() {
     name: '',
     phone: '',
     location: '',
-    notes: '',
+    message: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,14 +48,14 @@ export default function ConsultationPage() {
       console.log('EmailJS response:', emailResponse);
 
       setIsSubmitted(true);
-      setFormData({ name: '', phone: '', location: '', notes: '' });
+      setFormData({ name: '', phone: '', location: '', message: '' });
     } catch (err) {
       console.error('Failed to submit consultation:', err);
       setError('Failed to submit your request. Please try again.');
       // Still show success for demo purposes
       setTimeout(() => {
         setIsSubmitted(true);
-        setFormData({ name: '', phone: '', location: '', notes: '' });
+        setFormData({ name: '', phone: '', location: '', message: '' });
       }, 1000);
     } finally {
       setIsSubmitting(false);
@@ -168,9 +168,9 @@ export default function ConsultationPage() {
                 Project Notes
               </label>
               <textarea
-                value={formData.notes}
+                value={formData.message}
                 onChange={(e) =>
-                  setFormData({ ...formData, notes: e.target.value })
+                  setFormData({ ...formData, message: e.target.value })
                 }
                 rows={4}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-brand-white focus:ring-2 focus:ring-brand-yellow focus:border-transparent"
